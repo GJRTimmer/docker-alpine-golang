@@ -24,7 +24,7 @@ COPY no-pic.patch /
 # https://golang.org/issue/17847
 COPY 17847.patch /
 
-RUN set -ex && 
+RUN set -ex && \
 	apk add --no-cache --virtual .build-deps \
 		bash \
 		gcc \
