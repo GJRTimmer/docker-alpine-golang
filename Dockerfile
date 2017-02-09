@@ -71,6 +71,10 @@ RUN curl https://glide.sh/get | sh && \
 		golang.org/x/tools/cmd/goimports \
 		golang.org/x/tools/cmd/stringer \
 		github.com/golang/protobuf/proto \
-		github.com/golang/protobuf/protoc-gen-go
+		github.com/golang/protobuf/protoc-gen-go && \
+	cd ${GOPATH}/src && \
+	go get -u -v ./... || true && \
+	go get -u -v ./... || true && \
+	go get -u -v ./... || true
 
 # EOF
