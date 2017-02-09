@@ -19,7 +19,7 @@ LABEL \
 	nl.timmertech.vcs-ref=${VCS_REF} \
 	nl.timmertech.license=MIT
 
-RUN apk add --no-cache --update ca-certificates wget git curl unzip && \
+RUN apk add --no-cache --update ca-certificates wget git curl unzip openssh && \
 	apk upgrade --update --no-cache
 
 # https://golang.org/issue/14851
@@ -62,7 +62,8 @@ WORKDIR $GOPATH
 
 COPY go-wrapper /usr/local/bin/
 
-RUN curl https://glide.sh/get | sh && \
+RUN git config --global http.https://gopkg.in.followRedirects true && \
+	curl https://glide.sh/get | sh && \
 	go get -u -v \
 		golang.org/x/tools/cmd/godoc \
 		github.com/DATA-DOG/godog/cmd/godog \
@@ -71,10 +72,6 @@ RUN curl https://glide.sh/get | sh && \
 		golang.org/x/tools/cmd/goimports \
 		golang.org/x/tools/cmd/stringer \
 		github.com/golang/protobuf/proto \
-		github.com/golang/protobuf/protoc-gen-go && \
-	cd ${GOPATH}/src && \
-	go get -u -v ./... || true && \
-	go get -u -v ./... || true && \
-	go get -u -v ./... || true
+		github.com/golang/protobuf/protoc-gen-go
 
 # EOF
