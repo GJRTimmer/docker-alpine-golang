@@ -4,9 +4,9 @@ MAINTAINER G.J.R. Timmer <gjr.timmer@gmail.com>
 ARG BUILD_DATE
 ARG VCS_REF
 
-ARG GOLANG_VERSION=1.7.4
+ARG GOLANG_VERSION=1.8
 ARG GOLANG_SRC_URL=https://golang.org/dl/go${GOLANG_VERSION}.src.tar.gz
-ARG GOLANG_SRC_SHA256=4c189111e9ba651a2bb3ee868aa881fab36b2f2da3409e80885ca758a6b614cc
+ARG GOLANG_SRC_SHA256=406865f587b44be7092f206d73fc1de252600b79b3cacc587b74b5ef5c623596
 
 ARG PROTOC_VERSION=3.2.0
 ARG PROTOC_URL=https://github.com/google/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip
@@ -24,15 +24,15 @@ RUN apk add --no-cache --update ca-certificates wget git curl unzip openssh && \
 
 # https://golang.org/issue/14851
 COPY no-pic.patch /
-# https://golang.org/issue/17847
-COPY 17847.patch /
 
 RUN set -ex && \
-	apk add --no-cache --virtual .build-deps \
+	apk add --no-cache \
 		bash \
 		gcc \
 		musl-dev \
 		openssl \
+		openssl-dev \
+		alpine-dev \
 		go && \
 	export GOROOT_BOOTSTRAP="$(go env GOROOT)" && \
 	wget -q "${GOLANG_SRC_URL}" -O golang.tar.gz && \
@@ -41,10 +41,8 @@ RUN set -ex && \
 	rm golang.tar.gz && \
 	cd /usr/local/go/src && \
 	patch -p2 -i /no-pic.patch && \
-	patch -p2 -i /17847.patch && \
 	./make.bash && \
-	rm -rf /*.patch && \
-	apk del .build-deps
+	rm -rf /*.patch
 
 RUN wget -q "${PROTOC_URL}" -O protoc.zip && \
 	cd /usr && \
