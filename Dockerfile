@@ -32,7 +32,7 @@ RUN set -ex && \
 		musl-dev \
 		openssl \
 		openssl-dev \
-		alpine-dev \
+		alpine-sdk \
 		go && \
 	export GOROOT_BOOTSTRAP="$(go env GOROOT)" && \
 	wget -q "${GOLANG_SRC_URL}" -O golang.tar.gz && \
