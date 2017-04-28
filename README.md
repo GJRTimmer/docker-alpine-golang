@@ -11,6 +11,7 @@
 - [Installation](#installation)
   - [DockerHub](#install-from-dockerhub)
   - [TimmerTech](#install-from-timmertech)
+- [Contents](#contents)
 
 
 # Docker Registries
@@ -50,3 +51,18 @@ Build:
 ```bash
 docker build -t datacore/alpine-golang https://gitlab.timmertech.nl/docker/alpine-golang
 ```
+
+## Contents
+
+| Item | Version | Description |
+|------|---------|-------------|
+| GO | 1.8.1 | - |
+| Google ProtoBuf | 3.2.0 | - |
+| Glide | 0.12.3 | Golang Package manager |
+| godoc | latest | - |
+| godog | latest | - |
+| gofmt | latest | - |
+| goimports | latest | - |
+| stringer | latest | - |
+| proto | latest | - |
+| protoc-gen-go | - |
