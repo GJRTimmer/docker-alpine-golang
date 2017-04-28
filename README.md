@@ -65,4 +65,4 @@ docker build -t datacore/alpine-golang https://gitlab.timmertech.nl/docker/alpin
 | goimports | latest | - |
 | stringer | latest | - |
 | proto | latest | - |
-| protoc-gen-go | - |
+| protoc-gen-go | latest | - |
