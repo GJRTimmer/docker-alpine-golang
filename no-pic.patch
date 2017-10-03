@@ -1,8 +1,8 @@
 diff --git a/src/cmd/link/internal/ld/lib.go b/src/cmd/link/internal/ld/lib.go
-index 14f4fa9..5599307 100644
+index 6252871..94ef43c 100644
 --- a/src/cmd/link/internal/ld/lib.go
 +++ b/src/cmd/link/internal/ld/lib.go
-@@ -1272,6 +1272,11 @@ func hostlink() {
+@@ -1293,6 +1293,11 @@ func (l *Link) hostlink() {
  		argv = append(argv, peimporteddlls()...)
  	}
  
@@ -12,5 +12,5 @@ index 14f4fa9..5599307 100644
 +	argv = append(argv, "-fno-PIC")
 +
  	if l.Debugvlog != 0 {
- 		l.Logf("%5.2f host link:", obj.Cputime())
+ 		l.Logf("%5.2f host link:", Cputime())
  		for _, v := range argv {

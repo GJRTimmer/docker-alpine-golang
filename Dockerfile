@@ -4,11 +4,11 @@ MAINTAINER G.J.R. Timmer <gjr.timmer@gmail.com>
 ARG BUILD_DATE
 ARG VCS_REF
 
-ARG GOLANG_VERSION=1.8.3
+ARG GOLANG_VERSION=1.9
 ARG GOLANG_SRC_URL=https://golang.org/dl/go${GOLANG_VERSION}.src.tar.gz
-ARG GOLANG_SRC_SHA256=5f5dea2447e7dcfdc50fa6b94c512e58bfba5673c039259fd843f68829d99fa6
+ARG GOLANG_SRC_SHA256=a4ab229028ed167ba1986825751463605264e44868362ca8e7accc8be057e993
 
-ARG PROTOC_VERSION=3.3.0
+ARG PROTOC_VERSION=3.4.0
 ARG PROTOC_URL=https://github.com/google/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip
 
 LABEL \
@@ -22,8 +22,9 @@ LABEL \
 RUN apk add --no-cache --update ca-certificates wget git curl unzip openssh && \
 	apk upgrade --update --no-cache
 
-# https://golang.org/issue/14851
-COPY no-pic.patch /
+# https://golang.org/issue/14851 (Go 1.8 & 1.7)
+# https://golang.org/issue/17847 (Go 1.7)
+COPY *.patch /go-alpine-patches/
 
 RUN set -ex && \
 	apk add --no-cache \
@@ -34,15 +35,32 @@ RUN set -ex && \
 		openssl-dev \
 		alpine-sdk \
 		go && \
-	export GOROOT_BOOTSTRAP="$(go env GOROOT)" && \
+	export \
+		# set GOROOT_BOOTSTRAP such that we can actually build Go
+		GOROOT_BOOTSTRAP="$(go env GOROOT)" \
+		# ... and set "cross-building" related vars to the installed system's values so that we create a build targeting the proper arch
+		# (for example, if our build host is GOARCH=amd64, but our build env/image is GOARCH=386, our build needs GOARCH=386)
+		GOOS="$(go env GOOS)" \
+		GOARCH="$(go env GOARCH)" \
+		GO386="$(go env GO386)" \
+		GOARM="$(go env GOARM)" \
+		GOHOSTOS="$(go env GOHOSTOS)" \
+		GOHOSTARCH="$(go env GOHOSTARCH)" \
+	; \
+	\
 	wget -q "${GOLANG_SRC_URL}" -O golang.tar.gz && \
 	echo "${GOLANG_SRC_SHA256}  golang.tar.gz" | sha256sum -c - && \
 	tar -C /usr/local -xzf golang.tar.gz && \
 	rm golang.tar.gz && \
 	cd /usr/local/go/src && \
-	patch -p2 -i /no-pic.patch && \
+	for p in /go-alpine-patches/*.patch; do \
+		[ -f "$p" ] || continue; \
+		patch -p2 -i "$p"; \
+	done; \
+	\
 	./make.bash && \
-	rm -rf /*.patch
+	\
+	rm -rf /go-alpine-patches
 
 RUN wget -q "${PROTOC_URL}" -O protoc.zip && \
 	cd /usr && \
