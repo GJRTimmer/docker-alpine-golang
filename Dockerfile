@@ -88,6 +88,7 @@ RUN git config --global http.https://gopkg.in.followRedirects true && \
 		golang.org/x/tools/cmd/goimports \
 		golang.org/x/tools/cmd/stringer \
 		github.com/golang/protobuf/proto \
-		github.com/golang/protobuf/protoc-gen-go
+		github.com/golang/protobuf/protoc-gen-go \
+		github.com/golang/dep/cmd/dep
 
 # EOF
