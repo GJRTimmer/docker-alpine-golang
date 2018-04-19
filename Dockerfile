@@ -75,7 +75,6 @@ WORKDIR $GOPATH
 COPY go-wrapper /usr/local/bin/
 
 RUN git config --global http.https://gopkg.in.followRedirects true && \
-	curl https://glide.sh/get | sh && \
 	go get -u -v \
 		golang.org/x/tools/cmd/godoc \
 		github.com/DATA-DOG/godog/cmd/godog \
