@@ -1,13 +1,10 @@
 FROM registry.timmertech.nl/docker/alpine-glibc:latest
 
-ENV GOLANG_VERSION=1.9
-ENV PROTOC_VERSION=3.4.0
-
 ARG BUILD_DATE
 ARG VCS_REF
-ARG GOLANG_SRC_URL=https://golang.org/dl/go${GOLANG_VERSION}.src.tar.gz
-ARG GOLANG_SRC_SHA256=a4ab229028ed167ba1986825751463605264e44868362ca8e7accc8be057e993
-ARG PROTOC_URL=https://github.com/google/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip
+
+ENV GOLANG_VERSION=1.9
+ENV PROTOC_VERSION=3.4.0
 
 LABEL \
 	maintainer="G.J.R. Timmer <gjr.timmer@gmail.com>" \
@@ -47,8 +44,8 @@ RUN set -ex && \
 		GOHOSTARCH="$(go env GOHOSTARCH)" \
 	; \
 	\
-	wget -q "${GOLANG_SRC_URL}" -O golang.tar.gz && \
-	echo "${GOLANG_SRC_SHA256}  golang.tar.gz" | sha256sum -c - && \
+	wget -q "https://golang.org/dl/go${GOLANG_VERSION}.src.tar.gz" -O golang.tar.gz && \
+	echo "a4ab229028ed167ba1986825751463605264e44868362ca8e7accc8be057e993  golang.tar.gz" | sha256sum -c - && \
 	tar -C /usr/local -xzf golang.tar.gz && \
 	rm golang.tar.gz && \
 	cd /usr/local/go/src && \
@@ -57,14 +54,11 @@ RUN set -ex && \
 		patch -p2 -i "$p"; \
 	done; \
 	\
-	ls /usr/local/go && \
-	cd .. && \
-	ls && \
 	./make.bash && \
 	\
 	rm -rf /go-alpine-patches
 
-RUN wget -q "${PROTOC_URL}" -O protoc.zip && \
+RUN wget -q "https://github.com/google/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip" -O protoc.zip && \
 	cd /usr && \
 	unzip ../protoc.zip && \
 	rm -rf /protoc.zip && \
