@@ -1,13 +1,12 @@
 FROM registry.timmertech.nl/docker/alpine-glibc:latest
 
+ENV GOLANG_VERSION=1.9
+ENV PROTOC_VERSION=3.4.0
+
 ARG BUILD_DATE
 ARG VCS_REF
-
-ARG GOLANG_VERSION=1.9
 ARG GOLANG_SRC_URL=https://golang.org/dl/go${GOLANG_VERSION}.src.tar.gz
 ARG GOLANG_SRC_SHA256=a4ab229028ed167ba1986825751463605264e44868362ca8e7accc8be057e993
-
-ARG PROTOC_VERSION=3.4.0
 ARG PROTOC_URL=https://github.com/google/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip
 
 LABEL \
