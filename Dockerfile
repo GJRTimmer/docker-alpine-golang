@@ -1,5 +1,4 @@
 FROM registry.timmertech.nl/docker/alpine-glibc:latest
-MAINTAINER G.J.R. Timmer <gjr.timmer@gmail.com>
 
 ARG BUILD_DATE
 ARG VCS_REF
@@ -12,6 +11,7 @@ ARG PROTOC_VERSION=3.4.0
 ARG PROTOC_URL=https://github.com/google/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip
 
 LABEL \
+	maintainer="G.J.R. Timmer <gjr.timmer@gmail.com>" \
 	nl.timmertech.build-date=${BUILD_DATE} \
 	nl.timmertech.name=alpine-golang \
 	nl.timmertech.vendor=timmertech.nl \
