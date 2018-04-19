@@ -58,6 +58,9 @@ RUN set -ex && \
 		patch -p2 -i "$p"; \
 	done; \
 	\
+	ls /usr/local/go && \
+	cd .. && \
+	ls && \
 	./make.bash && \
 	\
 	rm -rf /go-alpine-patches
