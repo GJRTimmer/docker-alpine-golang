@@ -3,8 +3,8 @@ FROM registry.timmertech.nl/docker/alpine-glibc:latest
 ARG BUILD_DATE
 ARG VCS_REF
 
-ENV GOLANG_VERSION=1.10.1
-ENV PROTOC_VERSION=3.5.1
+ENV GOLANG_VERSION=1.10.3
+ENV PROTOC_VERSION=3.6.1
 
 LABEL \
 	maintainer="G.J.R. Timmer <gjr.timmer@gmail.com>" \
@@ -41,7 +41,7 @@ RUN set -ex && \
 	; \
 	\
 	wget -q "https://golang.org/dl/go${GOLANG_VERSION}.src.tar.gz" -O golang.tar.gz && \
-	echo "589449ff6c3ccbff1d391d4e7ab5bb5d5643a5a41a04c99315e55c16bbf73ddc  golang.tar.gz" | sha256sum -c - && \
+	echo "567b1cc66c9704d1c019c50bef946272e911ec6baf244310f87f4e678be155f2  golang.tar.gz" | sha256sum -c - && \
 	tar -C /usr/local -xzf golang.tar.gz && \
 	rm golang.tar.gz && \
 	cd /usr/local/go/src && \
@@ -71,11 +71,8 @@ WORKDIR $GOPATH
 RUN git config --global http.https://gopkg.in.followRedirects true && \
 	go get -u -v \
 		golang.org/x/tools/cmd/godoc \
-		github.com/DATA-DOG/godog/cmd/godog \
-		github.com/DATA-DOG/godog \
 		cmd/gofmt \
-		golang.org/x/tools/cmd/goimports \
-		golang.org/x/tools/cmd/stringer \
+		golang.org/x/tools/cmd/... \
 		github.com/golang/protobuf/proto \
 		github.com/golang/protobuf/protoc-gen-go \
 		github.com/golang/dep/cmd/dep
